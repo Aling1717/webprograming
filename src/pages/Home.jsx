@@ -1,59 +1,79 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+const ABOUT_LINES = [
+    "✅ Hi, my name is Pan Yuling",
+    "🔐 My student number is 23998120",
+    "🛠️ I am a student at Synu.",
+    "💡 This time I will show you my website.",
+    "🤝 Hope I can get high marks."
+];
+
 function Home() {
-  return (
-    <div className="relative isolate overflow-hidden bg-gray-900 min-h-[calc(100vh-64px-40px)] flex items-center justify-center"> {/* min-h-screen minus header/footer height */}
-      <img
-        src="https://images.unsplash.com/photo-1518770660439-4636190af170?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="Developer workspace with code and abstract tech background"
-        className="absolute inset-0 -z-10 h-full w-full object-cover opacity-30"
-      />
-      
-      <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl text-center lg:text-left">
-            Crafting Digital Experiences
-          </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-300 text-center lg:text-left">
-            Welcome to my Full Stack Portfolio, a showcase of robust web applications built with React, Node.js, and modern deployment practices. Explore my projects and delve into insightful blog posts.
-          </p>
-          <div className="mt-10 flex items-center justify-center lg:justify-start gap-x-6">
-            <Link
-              to="/projects"
-              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200"
-            >
-              View Projects
-            </Link>
-            <Link to="/blog" className="text-sm font-semibold leading-6 text-white hover:text-indigo-400 transition-all duration-200">
-              Read My Blog <span aria-hidden="true">→</span>
-            </Link>
-          </div>
+    const [lineIndex, setLineIndex] = useState(0);
+
+    useEffect(() => {
+        if (lineIndex < ABOUT_LINES.length) {
+            const timer = setTimeout(() => {
+                setLineIndex(prevIndex => prevIndex + 1);
+            }, 1500); 
+            return () => clearTimeout(timer);
+        }
+    }, [lineIndex]);
+
+    return (
+        // 使用白色背景和居中布局
+        <div className="bg-white min-h-[calc(100vh-64px-40px)] flex items-center justify-center p-6">
+            <div className="max-w-4xl mx-auto p-12 shadow-2xl rounded-xl bg-slate-50 border border-slate-200">
+                
+                {/* 顶部标题区 */}
+                <header className="mb-10 text-center">
+                    <h1 className="text-5xl font-extrabold text-gray-800">
+                        Pan Yuling's final project.
+                    </h1>
+                </header>
+
+                {/* 逐条出现的信息区域 */}
+                <main className="min-h-[150px]"> {/* 保证区域高度 */}
+                    <ul className="space-y-4 text-xl text-gray-700 font-medium">
+                        {ABOUT_LINES.slice(0, lineIndex).map((line, index) => (
+                            <li 
+                                key={index} 
+                                // 使用自定义动画类
+                                className="opacity-0 animate-fadeIn" 
+                                style={{ animationDelay: `${index * 0.15}s` }} 
+                            >
+                                {line}
+                            </li>
+                        ))}
+                    </ul>
+                </main>
+
+                {/* 技能和联系按钮 */}
+                <footer className="mt-12 pt-6 border-t border-slate-200 flex justify-between items-center">
+
+                    <Link
+                        to="/contact"
+                        // 青色是专业的强调色
+                        className="rounded-full bg-teal-600 px-6 py-3 text-sm font-bold text-white shadow-lg hover:bg-teal-700 transition duration-300 transform hover:scale-105"
+                    >
+                        立即联系我
+                    </Link>
+                </footer>
+            </div>
+            
+            {/* 注入 CSS 动画类 (为了让代码保持简洁，直接写在这里) */}
+            <style jsx="true">{`
+              @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+              }
+              .animate-fadeIn {
+                animation: fadeIn 0.5s ease-out forwards;
+              }
+            `}</style>
         </div>
-        <div className="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">
-          {/* 这里可以放置一些小卡片或亮点，例如技术栈图标等，为了简洁，暂时省略 */}
-          <dl className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4 hidden"> {/* 隐藏一些占位元素 */}
-            <div className="flex flex-col-reverse">
-              <dt className="text-base leading-7 text-gray-300">Years of Experience</dt>
-              <dd className="text-2xl font-bold leading-9 tracking-tight text-white">3+</dd>
-            </div>
-            <div className="flex flex-col-reverse">
-              <dt className="text-base leading-7 text-gray-300">Projects Completed</dt>
-              <dd className="text-2xl font-bold leading-9 tracking-tight text-white">20+</dd>
-            </div>
-            <div className="flex flex-col-reverse">
-              <dt className="text-base leading-7 text-gray-300">Client Satisfaction</dt>
-              <dd className="text-2xl font-bold leading-9 tracking-tight text-white">100%</dd>
-            </div>
-            <div className="flex flex-col-reverse">
-              <dt className="text-base leading-7 text-gray-300">Coffee Consumed (Liter)</dt>
-              <dd className="text-2xl font-bold leading-9 tracking-tight text-white">500+</dd>
-            </div>
-          </dl>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default Home;
